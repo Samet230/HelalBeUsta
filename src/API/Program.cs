@@ -13,6 +13,15 @@ builder.Services.AddDbContext<AutoRepairDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:3000") // Frontend URL
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
+
 // MediatR Registration
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(AutoRepair.Infrastructure.Data.AutoRepairDbContext).Assembly);
@@ -26,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 app.MapControllers();

@@ -22,3 +22,6 @@ reset-postgres-password-v2.ps1
 *.tmp
 *.bak
 *.bak_v2
+
+# Documentation
+raporlar/
