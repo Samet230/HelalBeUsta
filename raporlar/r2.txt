@@ -1,0 +1,41 @@
+# DATABASE SCHEMA SPECIFICATION
+Database: PostgreSQL 16
+Extensions: PostGIS (for location), UUID-OSSP
+
+## TABLES
+
+1. **Users (Schema: identity)**
+   - Id (UUID, PK)
+   - PhoneNumber (String, Unique)
+   - Role (Enum: Customer, Provider, Admin)
+   - FullName (String)
+   - CreatedAt (DateTime)
+
+2. **Shops (Schema: repair)**
+   - Id (UUID, PK)
+   - OwnerId (UUID, FK -> Users.Id)
+   - Name (String)
+   - Location (Geometry Point - SRID 4326) -- PostGIS Point for Map Queries
+   - Address (String)
+   - Details (JSONB) -- Stores dynamic info (e.g., TaxNumber, WorkingHours)
+   - IsVerified (Boolean)
+
+3. **Jobs (Schema: repair)**
+   - Id (UUID, PK)
+   - ShopId (UUID, FK -> Shops.Id)
+   - CustomerId (UUID, FK -> Users.Id)
+   - JobType (Enum: Auto, Phone, Electronic, Plumbing)
+   - Status (Enum: Pending, Approved, InProgress, PartsWaiting, Completed)
+   - AssetInfo (JSONB) -- **CRITICAL POLYMORPHIC FIELD**
+     -- Example for Auto: { "Plate": "34ABC12", "Brand": "BMW", "Model": "320i", "Year": 2015 }
+     -- Example for Phone: { "IMEI": "12345...", "Brand": "Apple", "Model": "iPhone 13" }
+   - EstimatedCost (Decimal, Nullable)
+   - CreatedAt (DateTime)
+
+4. **JobTimeline (Schema: repair)**
+   - Id (UUID, PK)
+   - JobId (UUID, FK -> Jobs.Id)
+   - Status (Enum)
+   - Note (String)
+   - MediaUrls (StringArray/JSONB) -- Photos/Videos uploaded by provider
+   - Timestamp (DateTime)

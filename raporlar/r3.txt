@@ -1,0 +1,24 @@
+# TECHNICAL GUIDELINES & STACK
+
+## ARCHITECTURE
+- **Style:** Modular Monolith
+- **Layers:** 1. API (Host)
+  2. Modules (Feature Folders like AutoRepair, UserAccess)
+  3. BuildingBlocks (Shared Kernel)
+- **Communication:** Modules communicate ONLY via Public Interfaces or Integration Events (MediatR Notifications). No direct DB context access between modules.
+
+## TECHNOLOGIES
+- **Framework:** .NET 8 Web API
+- **ORM:** Entity Framework Core 8 (Code First Approach)
+- **Database:** PostgreSQL (Npgsql Provider)
+- **Validation:** FluentValidation
+- **CQRS Pattern:** MediatR (Commands and Queries)
+- **Object Mapping:** Mapster or AutoMapper
+- **Documentation:** Swagger / OpenAPI
+
+## CODING RULES (SOLID)
+1. **Rich Domain Model:** Entities should contain business logic (DDD), not just getters/setters.
+2. **Result Pattern:** All API responses must be wrapped in a generic `Result<T>` class (Success, Message, Data).
+3. **Global Exception Handling:** Use middleware to catch exceptions and return standard JSON.
+4. **Dependency Injection:** Use Interface-based injection.
+5. **Configuration:** Use `appsettings.json` for DB connection strings and secrets.

@@ -1,0 +1,24 @@
+# Visual Studio & .NET
+.vs/
+bin/
+obj/
+*.user
+*.suo
+[Dd]ebug/
+[Rr]elease/
+
+# Build results
+build_error.txt
+build_errors_v2.txt
+build_errors_v3.txt
+msbuild.log
+test_results.txt
+
+# Scripts with credentials (IMPORTANT)
+reset-postgres-password.ps1
+reset-postgres-password-v2.ps1
+
+# Temporary files
+*.tmp
+*.bak
+*.bak_v2
